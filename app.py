@@ -30,7 +30,7 @@ cursor.execute(
 )
 
 cursor.execute(
-    'create table if not exists MATCH ( \
+    'create table if not exists MATCHES ( \
         matchId INT AUTO_INCREMENT PRIMARY KEY,\
         team1 varchar(255), \
         team2 varchar(255), \
@@ -45,7 +45,7 @@ cursor.execute(
         playerId int PRIMARY KEY,\
         Team varchar(255), \
         name varchar(255), \
-        role varchar(255)\
+        role varchar(255),\
         matchesPlayed int, \
         runs int, \
         average float, \
@@ -129,7 +129,7 @@ def login():
 @app.route('/api/matches', methods=['GET'])
 def getMatches():
     try:
-        cursor.execute("SELECT * FROM MATCH")
+        cursor.execute("SELECT * FROM MATCHES")
         matches = cursor.fetchall()
         return jsonify({
             "matches": matches,
@@ -144,7 +144,7 @@ def getMatches():
 @app.route('/api/matches/<match_id>', methods=['POST'])
 def getMatchDetails(match_id):
     try:
-        cursor.execute("SELECT * FROM MATCH WHERE matchId = %s", (match_id, ))
+        cursor.execute("SELECT * FROM MATCHES WHERE matchId = %s", (match_id, ))
         match = cursor.fetchone()
         cursor.execute("SELECT * FROM SQUAD WHERE Team = %s", (match['team1'], ))
         team1 = cursor.fetchall()
